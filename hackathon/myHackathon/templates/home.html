@@ -5,26 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+        /* Cyberpunk Background */
+        body {
+            background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
         /* Chatbot Container */
         #chatbot {
             width: 40%;
             margin: auto;
             padding: 20px;
-            border: 2px solid black;  /* ✅ Added color */
-            border-radius: 10px;  /* ✅ Smooth corners */
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);  /* ✅ Soft shadow */
-            text-align: center;
-            font-family: Arial, sans-serif;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px cyan;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid cyan;
+            animation: neon-glow 1.5s infinite alternate;
+        }
+
+        @keyframes neon-glow {
+            0% { box-shadow: 0 0 10px cyan; }
+            100% { box-shadow: 0 0 20px cyan; }
         }
 
         /* Input Field */
         #userMessage {
-            width: 80%;
+            width: 75%;
             padding: 10px;
             margin-top: 10px;
-            border: 1px solid #ccc;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid cyan;
+            color: cyan;
             border-radius: 5px;
             font-size: 16px;
+            outline: none;
+        }
+
+        #userMessage::placeholder {
+            color: rgba(0, 255, 255, 0.5);
         }
 
         /* Send Button */
@@ -32,26 +55,36 @@
             padding: 10px 15px;
             margin-left: 10px;
             border: none;
-            background-color: #007BFF;
+            background: linear-gradient(90deg, #ff00ff, #ff0077);
             color: white;
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(90deg, #ff0077, #ff00ff);
+            box-shadow: 0px 0px 10px #ff00ff;
         }
 
         /* AI Response */
-        p {
-            font-size: 18px;
+        #response-box {
+            background: rgba(0, 255, 255, 0.15);
+            color: cyan;
+            {% comment %} border-left: 4px solid cyan;
+            padding: 15px;
             margin-top: 20px;
+            {% comment %} border-radius: 10px; {% endcomment %}
+            {% comment %} box-shadow: 0px 0px 10px cyan;
+            text-align: left;
+            max-width: 80%; {% endcomment %}
+            margin: 20px auto;
+            font-size: 18px;  /* Increase font size for readability */
+            line-height: 1.5;  /* Add space between lines */
+            word-wrap: break-word;  /* Ensure long text doesn't overflow */
         }
-
-        strong {
-            color: #333;
-        }
+        
     </style>
 </head>
 <body>
@@ -60,14 +93,15 @@
         
         <input type="text" id="userMessage" placeholder="Type your message here">
         <button onclick="sendMessage()">Send</button>
+        <br> <br> <br>
         
-        <p><strong>AI Response:</strong> <span id="response"></span></p>
+        <p><strong>AI Response:</strong><span id="response-box"></span></p>
     </div>
 
     <script>
         function sendMessage() {
             const userMessage = document.getElementById("userMessage").value.trim();
-            const responseElement = document.getElementById("response");
+            const responseElement = document.getElementById("response-box");
 
             if (!userMessage) {
                 alert("Please enter a message!"); // ✅ Prevent empty messages
