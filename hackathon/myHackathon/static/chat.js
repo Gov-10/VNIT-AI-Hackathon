@@ -1,14 +1,15 @@
-document.getElementById("sendBtn").addEventListener("click", async () => {
-    const userMessage = document.getElementById("userInput").value;
+document.getElementById("sendBtn").addEventListener("click", function() {
+    let userMessage = document.getElementById("userInput").value;
     
-    const response = await fetch("/chatbot/", {
+    fetch("/chatbot-response/", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json"
         },
-        body: `message=${encodeURIComponent(userMessage)}`,
+        body: JSON.stringify({ message: userMessage })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("chatbox").innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
     });
-
-    const data = await response.json();
-    document.getElementById("chatOutput").innerText = data.choices[0].message.content;
 });

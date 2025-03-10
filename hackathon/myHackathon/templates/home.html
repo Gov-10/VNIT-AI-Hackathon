@@ -4,35 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
+    <style>
+        /* Chatbot Container */
+        #chatbot {
+            width: 40%;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid black;  /* ✅ Added color */
+            border-radius: 10px;  /* ✅ Smooth corners */
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);  /* ✅ Soft shadow */
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Input Field */
+        #userMessage {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Send Button */
+        button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* AI Response */
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        strong {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h2>Chat with AI</h2>
-    
-    <input type="text" id="userMessage" placeholder="Type your message here">
-    <button onclick="sendMessage()">Send</button>
-    
-    <p><strong>AI Response:</strong> <span id="response"></span></p>
+    <div id="chatbot">
+        <h2>Chat with AI</h2>
+        
+        <input type="text" id="userMessage" placeholder="Type your message here">
+        <button onclick="sendMessage()">Send</button>
+        
+        <p><strong>AI Response:</strong> <span id="response"></span></p>
+    </div>
 
     <script>
         function sendMessage() {
-            const userMessage = document.getElementById("userMessage").value;
-            const responseElement = document.getElementById("response");  // ✅ Ensure this exists
+            const userMessage = document.getElementById("userMessage").value.trim();
+            const responseElement = document.getElementById("response");
 
-            if (!responseElement) {
-                console.error("Error: Element with ID 'response' not found in the document.");
+            if (!userMessage) {
+                alert("Please enter a message!"); // ✅ Prevent empty messages
                 return;
             }
 
             fetch("http://127.0.0.1:8000/chatbot_response/", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: userMessage })
             })
             .then(response => response.json())
             .then(data => {
-                responseElement.textContent = data.reply;  // ✅ This will no longer be null
+                responseElement.textContent = data.reply;
             })
             .catch(error => {
                 console.error("Error:", error);
