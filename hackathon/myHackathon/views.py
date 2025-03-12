@@ -9,12 +9,21 @@ from rapidfuzz import process  # Import fuzzy matching
 from .models import Event  # Import Event model
 
 def home(request):
-    return render(request, "home.html")  # Render a simple home page
+    return render(request, "home.html")  
+
+def algorithmia(request):
+    return render(request, 'algorithmia.html') 
+
+def web_weave(request):
+    return render(request, 'web_weave.html')
+
+def contact_us(request):
+    return render(request, 'contact_us.html')
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Define the list of allowed AI-related questions
+# Define allowed AI-related questions
 ALLOWED_QUESTIONS = [
     "hello",
     "hi",
@@ -24,22 +33,38 @@ ALLOWED_QUESTIONS = [
     "What is the impact of AI on jobs?",
     "What are some futuristic technologies?",
     "What is quantum computing?",
-    "What are the latest trends in AI?"
+    "What are the latest trends in AI?",
+    "Tell me about NIT Nagpur",
+    "Tell me about IIIT Butibori",
 ]
+
+# Define a dictionary for Google Maps locations
+LOCATION_MAPS = {
+    "iiit butibori": "https://maps.app.goo.gl/D6JEFcKjNyX8TsVm7",
+    "vnit nagpur": "https://maps.app.goo.gl/tp2ToBrJRDgqreuk7",
+    "nit nagpur": "https://maps.app.goo.gl/tp2ToBrJRDgqreuk7",
+}
 
 # Function to find the best matching question
 def get_best_match(user_input):
-    match, score, _ = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=75)  
-    return match if score else None  # Return match only if score >= 75
+    match, score, _ = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=65)  
+    return match if score else None  
 
 @csrf_exempt
 def chatbot_response(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            message = data.get("message", "").strip().lower()  # Convert message to lowercase
+            message = data.get("message", "").strip().lower()  
 
-            # Check if user is asking about events
+            # Check if the message is a location request
+            for location in LOCATION_MAPS:
+                if location in message:
+                    return JsonResponse({
+                        "reply": f"You can find {location.upper()} here: {LOCATION_MAPS[location]}"
+                    })
+
+            # Handle event-related queries
             if "event" in message or "schedule" in message:
                 events = Event.objects.all()
                 if not events:
@@ -51,17 +76,29 @@ def chatbot_response(request):
                 ])
                 return JsonResponse({"reply": f"Here are the upcoming events:\n{event_info}"})
 
-            # Get the best matching AI question
+            # Get the best-matching AI-related question
             best_match = get_best_match(message)
 
             if not best_match:
-                return JsonResponse({"reply": "Sorry, I can only answer specific questions about AI or events."})
+                return JsonResponse({"reply": "Sorry, I can only answer specific questions about AI, events, or locations."})
 
-            # Call Gemini AI for answering allowed AI questions
+            # Modify prompt to limit response length
+            prompt = f"""
+You are an AI chatbot. Your task is to answer the following question in a clear and precise manner.
+
+Question: {best_match}
+
+Rules:
+1. Keep the answer between 50-60 words.
+2. Do not provide irrelevant information.
+3. Answer in simple, easy-to-understand language.
+"""
+
+            # Call Gemini AI API
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
             headers = {"Content-Type": "application/json"}
             payload = {
-                "contents": [{"parts": [{"text": best_match}]}]  # Use the matched question
+                "contents": [{"parts": [{"text": prompt}]}]  
             }
 
             response = requests.post(url, headers=headers, json=payload)

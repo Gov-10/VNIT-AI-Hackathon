@@ -18,25 +18,29 @@
 
         /* Chatbot Container */
         #chatbot {
-            width: 40%;
-            margin: auto;
+            width: 25%;
+            {% comment %} margin: auto; {% endcomment %}
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px cyan;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid cyan;
             animation: neon-glow 1.5s infinite alternate;
+            position: absolute;
+            bottom : 20px;
+            left: 10px;
+            height: 500px;
         }
 
         @keyframes neon-glow {
             0% { box-shadow: 0 0 10px cyan; }
-            100% { box-shadow: 0 0 20px cyan; }
+            100% { box-shadow: 0 0 30px cyan; }
         }
 
         /* Input Field */
         #userMessage {
             width: 75%;
-            padding: 10px;
+            padding: 5px;
             margin-top: 10px;
             background: rgba(0, 255, 255, 0.1);
             border: 1px solid cyan;
@@ -52,7 +56,7 @@
 
         /* Send Button */
         button {
-            padding: 10px 15px;
+            padding: 10px 10px;
             margin-left: 10px;
             border: none;
             background: linear-gradient(90deg, #ff00ff, #ff0077);
@@ -64,30 +68,185 @@
         }
 
         button:hover {
-            background: linear-gradient(90deg, #ff0077, #ff00ff);
-            box-shadow: 0px 0px 10px #ff00ff;
+            background: linear-gradient(90deg,rgba(255, 0, 119, 0.34),rgba(255, 0, 255, 0.3));
+            box-shadow: 0px 0px 10pxrgba(255, 0, 255, 0.45);
         }
 
         /* AI Response */
         #response-box {
             background: rgba(0, 255, 255, 0.15);
             color: cyan;
-            {% comment %} border-left: 4px solid cyan;
-            padding: 15px;
-            margin-top: 20px;
-            {% comment %} border-radius: 10px; {% endcomment %}
-            {% comment %} box-shadow: 0px 0px 10px cyan;
-            text-align: left;
-            max-width: 80%; {% endcomment %}
             margin: 20px auto;
-            font-size: 18px;  /* Increase font size for readability */
-            line-height: 1.5;  /* Add space between lines */
-            word-wrap: break-word;  /* Ensure long text doesn't overflow */
+            font-size: 18px;  
+            line-height: 1.5;  
+            word-wrap: break-word; 
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a0a;
+            font-family: 'Orbitron', sans-serif;
         }
         
+        /* Navbar Styling */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0px 0px 10px cyan;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: left;
+            padding: 15px 20px;
+            z-index: 9999;
+            max-width: auto;
+            animation: neon-glow 1.5s infinite alternate;
+        }
+        
+        /* Logo Styling */
+        .logo {
+            color: cyan;
+            font-size: 1.5em;
+            text-shadow: 0px 0px 10px cyan;
+        }
+        
+        /* Navbar Links */
+        {% comment %} .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 20px 20px;
+        }
+         {% endcomment %}
+        .nav-link {
+            position: relative;
+            color: cyan;
+            text-decoration: none;
+            font-size: 1.2em;
+            text-shadow: 0px 0px 8px cyan;
+            transition: text-shadow 0.3s ease-in-out;
+            padding: 10px 15px;
+            align-items: center;
+        }
+        
+        /* Hover Effect: Neon Glow */
+        .nav-link:hover {
+            text-shadow: 0px 0px 15px cyan, 0px 0px 30px cyan;
+        }
+        
+        /* Underline Animation */
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: cyan;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(0, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid cyan;
+            box-shadow: 0px 0px 10px cyan;
+            border-radius: 8px;
+            list-style: none;
+            padding: 10px;
+            display: none;
+            min-width: 150px;
+            z-index: 1000;
+        }
+        
+        .dropdown-menu li {
+            padding: 10px;
+        }
+        
+        .dropdown-menu a {
+            color: cyan;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .dropdown-menu a:hover {
+            background: rgba(0, 255, 255, 0.3);
+            text-shadow: 0px 0px 15px cyan;
+        }
+        
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                {% comment %} flex-direction: column; {% endcomment %}
+                align-items: left;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: 5px;
+            }
+        } 
+        .cb{
+            position:sticky;
+        }    
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+       
+         <div class="logo">MyFest</div>
+            <a href="" class="nav-link">Home</a>
+           <a href="contact_us/" class="nav-link">Contact Us</a>
+           <ul class="dropdown">
+            <li>
+                <a href="#" class="nav-link">Events ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="algorithmia/"><b>Algorithmia</b></a></li>
+                    <li><a href="web_weave/"><b>Web_weave</b></a></li>
+                    <li><a href="#"><b>Coding Contest</b></a></li>
+                </ul>
+            </li>
+        </ul>
+        
+          <ul class="dropdown">
+            <!-- Dropdown for Speakers -->
+            <li>
+                <a href="#" class="nav-link">Gallery ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><b>2025</b></a></li>
+                    <li><a href="#"><b>2024</b></a></li>
+                    <li><a href="#"><b>2023</b></a></li>
+                </ul>
+            </li>
+        </ul>
+            <a href="#" class="nav-link">Register</a>
+    </nav><br><br><br><br>
+    
     <div id="chatbot">
         <h2>Chat with AI</h2>
         
@@ -98,13 +257,16 @@
         <p><strong>AI Response:</strong><span id="response-box"></span></p>
     </div>
 
+
+   
+
     <script>
         function sendMessage() {
             const userMessage = document.getElementById("userMessage").value.trim();
             const responseElement = document.getElementById("response-box");
 
             if (!userMessage) {
-                alert("Please enter a message!"); // ✅ Prevent empty messages
+                alert("Please enter a message!"); 
                 return;
             }
 
