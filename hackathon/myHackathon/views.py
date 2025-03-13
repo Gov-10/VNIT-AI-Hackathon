@@ -42,12 +42,11 @@ ALLOWED_QUESTIONS = [
 LOCATION_MAPS = {
     "iiit butibori": "https://maps.app.goo.gl/D6JEFcKjNyX8TsVm7",
     "vnit nagpur": "https://maps.app.goo.gl/tp2ToBrJRDgqreuk7",
-    "nit nagpur": "https://maps.app.goo.gl/tp2ToBrJRDgqreuk7",
 }
 
 # Function to find the best matching question
 def get_best_match(user_input):
-    match, score, _ = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=65)  
+    match, score, _ = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=70)  
     return match if score else None  
 
 @csrf_exempt
