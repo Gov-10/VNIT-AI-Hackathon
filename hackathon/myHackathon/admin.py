@@ -4,4 +4,9 @@ from django.contrib import admin
 from .models import ChatHistory,Event
 
 admin.site.register(ChatHistory)
-admin.site.register(Event)
+
+
+class EventAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
+admin.site.register(Event, EventAdmin)
