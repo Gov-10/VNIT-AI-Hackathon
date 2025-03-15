@@ -26,7 +26,7 @@
         /* Global Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #121212;
+            {% comment %} background-color: #121212; {% endcomment %}
             color: #e0e0e0;
             margin: 0;
             padding: 20px;
@@ -34,6 +34,11 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position:center;
+            height: 100vh;
+           width: 100vw;
         }
 
         /* Event Container */
@@ -105,5 +110,19 @@
         <p><strong>Description:</strong> {{ event.description }}</p>
         <a href="{% url 'event_list' %}" class="back-btn">Back to Events</a>
     </div>
+    <script>
+        window.onload = function() {
+            let hour = new Date().getHours();
+            let body = document.body;
+        
+            if (hour >= 6 && hour < 18) {
+                // Daytime theme
+                body.style.backgroundImage = "url('/static/forest-sun-rays.gif')";
+            } else {
+                // Nighttime theme
+                body.style.backgroundImage = "url('/static/night.gif')";
+            }
+        };
+    </script>
 </body>
 </html>
