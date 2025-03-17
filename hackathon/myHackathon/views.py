@@ -20,6 +20,8 @@ def web_weave(request):
 def contact_us(request):
     return render(request, 'contact_us.html')
 
+def register(request):
+    return render(request, 'register.html')
 
 def event_detail(request, slug):
     event = get_object_or_404(Event, slug=slug)
