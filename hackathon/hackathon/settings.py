@@ -163,7 +163,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Allowed hosts
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'your-railway-app-url.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://vnit-ai-hackathon-production.up.railway.app/']
 
 # Installed apps
 INSTALLED_APPS = [
