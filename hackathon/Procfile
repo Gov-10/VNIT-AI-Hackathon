@@ -1,2 +1,2 @@
-web: gunicorn VNIT-AI-Hackathon.wsgi:application --bind 0.0.0.0:$PORT
+web: gunicorn hackathon.wsgi:application --bind 0.0.0.0:$PORT
 
