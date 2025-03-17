@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x05kdzsku22g&h_%ns5=ke&*upf7&_h=nw3**to^^t1-%f#sd2'
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'your-railway-app-url.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 # CORS Settings
@@ -56,7 +58,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000"
 ]  # Allow API requests from any origin (change in production)
 
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000" , 'https://your-railway-app-url.up.railway.app']
 
 ROOT_URLCONF = 'hackathon.urls'
 
@@ -80,10 +82,7 @@ WSGI_APPLICATION = 'hackathon.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
 # Password validation
@@ -128,3 +127,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+INSTALLED_APPS += ['whitenoise.runserver_nostatic']
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+# Use WhiteNoise for static file handling
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
