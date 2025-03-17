@@ -258,3 +258,5 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # API Keys
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+CORS_ALLOW_ALL_ORIGINS = True
