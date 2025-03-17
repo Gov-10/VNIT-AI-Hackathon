@@ -1,7 +1,7 @@
 document.getElementById("sendBtn").addEventListener("click", function() {
     let userMessage = document.getElementById("userInput").value;
     
-    fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot-response/", {  // ✅ Update API URL
+    fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot_response/", {  // ✅ Update API URL
         method: "POST",
         headers: {
             "Content-Type": "application/json"
