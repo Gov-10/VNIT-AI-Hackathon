@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
+    <title>Cipher Minds fest</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
@@ -345,7 +345,7 @@
     
     <br><br><br><br>
 
-
+    <div id="countdown"></div>
 
     <!-- Chatbot Button -->
     <button id="chatbot-btn" onclick="toggleChatbot()">🤖AI Chatbot!</button>
@@ -403,7 +403,24 @@
                 responseElement.textContent = "Error fetching response";
             });
         }
-
+        function countdown() {
+            let eventDate = new Date("March 19, 2025 06:00:00").getTime();
+            let now = new Date().getTime();
+            let timeLeft = eventDate - now;
+    
+            let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById("countdown").style.color = "cyan";
+            document.getElementById("countdown").style.fontSize = "50px";
+            document.getElementById("countdown").style.fontWeight = "200px";
+            document.getElementById("countdown").textContent = `Event Starts In: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    
+            setTimeout(countdown, 1000);
+        }
+        countdown();
     </script>
 
 </body>
