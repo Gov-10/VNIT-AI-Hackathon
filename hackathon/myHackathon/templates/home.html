@@ -373,10 +373,12 @@
                 // Daytime theme
                 body.style.backgroundImage = "url('/static/forest-sun-rays.gif')";
                 document.getElementById("name").style.color = "black";
+                document.getElementById("countdown").style.color = "black";
             } else {
                 // Nighttime theme
                 body.style.backgroundImage = "url('/static/Tech2.gif')";
                 document.getElementById("name").style.color = "cyan";
+                document.getElementById("countdown").style.color = "cyan";
             }
         };
 
@@ -422,7 +424,6 @@
             let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
             
-            document.getElementById("countdown").style.color = "cyan";
             document.getElementById("countdown").style.fontSize = "50px";
             document.getElementById("countdown").style.fontWeight = "200px";
             document.getElementById("countdown").textContent = `Event Starts In: ${days}d ${hours}h ${minutes}m ${seconds}s`;
