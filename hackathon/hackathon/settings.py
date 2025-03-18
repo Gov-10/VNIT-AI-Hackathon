@@ -238,8 +238,8 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set!")
 
 DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL)
-}
+    'default': {'ENGINE': 'django.db.backends.postgresql', 'NAME': 'railway', 'USER': 'postgres' , 'PASSWORD': 'WkSuoYpIzpcKyFXYHIQpSOZNGSddGEJC', 'HOST' : 'postgres.railway.internal', 'PORT':'5432',}}
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -266,4 +266,3 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # API Keys
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-CORS_ALLOW_ALL_ORIGINS = True
