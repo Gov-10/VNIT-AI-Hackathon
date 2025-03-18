@@ -190,6 +190,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = False  # Change from True to False
+
+CORS_ALLOWED_ORIGINS = [
+    "https://vnit-ai-hackathon-production.up.railway.app",
+    "http://127.0.0.1:8000",  # Add this if testing locally
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://vnit-ai-hackathon-production.up.railway.app",
+    "http://127.0.0.1:8000",
+]
+
 CORS_ALLOW_METHODS = [
     "GET",
     "POST",
@@ -197,19 +209,8 @@ CORS_ALLOW_METHODS = [
     "DELETE",
     "OPTIONS"
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_CREDENTIALS = True
-# CORS Settings
-# CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:8000",
-#     "https://vnit-ai-hackathon-production.up.railway.app",  
-# ]
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "https://vnit-ai-hackathon-production.up.railway.app"
-]
-
-
 # URL configurations
 ROOT_URLCONF = 'hackathon.urls'
 
