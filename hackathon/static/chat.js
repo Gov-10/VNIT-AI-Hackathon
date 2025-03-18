@@ -20,7 +20,7 @@ function sendMessage() {
 
     let encodedMessage = encodeURIComponent(userMessage);
 
-    fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot_response/?message=" + encodedMessage, {
+    fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot_response?message=" + encodedMessage, {
         method: "GET",
         credentials: "include",  // Ensures cookies are sent
         headers: {
@@ -40,4 +40,3 @@ function sendMessage() {
 
     document.getElementById("user-input").value = "";
 }
-s
