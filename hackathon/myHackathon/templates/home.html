@@ -363,7 +363,6 @@
     </div>
 
     <script>
-        document.getElementById("name").style.color = "cyan";
         document.getElementById("name").style.fontSize = "200px";
         document.getElementById("name").style.fontWeight = "100px";
         window.onload = function() {
@@ -373,9 +372,11 @@
             if (hour >= 6 && hour < 18) {
                 // Daytime theme
                 body.style.backgroundImage = "url('/static/forest-sun-rays.gif')";
+                document.getElementById("name").style.color = "black";
             } else {
                 // Nighttime theme
                 body.style.backgroundImage = "url('/static/Tech2.gif')";
+                document.getElementById("name").style.color = "cyan";
             }
         };
 
