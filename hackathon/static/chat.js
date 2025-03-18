@@ -18,26 +18,30 @@ function sendMessage() {
     let userMessage = document.getElementById("user-input").value;
     console.log("Sending message:", userMessage);  // Debugging
 
-    let encodedMessage = encodeURIComponent(userMessage);
+    // let encodedMessage = encodeURIComponent(userMessage);
 
-    fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot_response?message=" + encodedMessage, {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",  // Ensures cookies are sent
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok: " + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        document.getElementById("chat-output").innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
-    })
-    .catch(error => console.error("Error:", error));
+    let apiUrl = `https://vnit-ai-hackathon-production.up.railway.app/chatbot_response/?message=${encodeURIComponent(userMessage)}`;
+console.log("API URL:", apiUrl); // Debugging
+
+fetch(apiUrl, {
+    method: "GET",
+    mode: "cors",
+    headers: {
+        "Content-Type": "application/json",
+    }
+})
+.then(response => {
+    console.log("Response received:", response);
+    if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+})
+.then(data => {
+    console.log("Response data:", data);
+    document.getElementById("chat-output").innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
+})
+.catch(error => console.error("Fetch error:", error));
 
     document.getElementById("user-input").value = "";
 }

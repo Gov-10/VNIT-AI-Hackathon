@@ -383,16 +383,19 @@
         function sendMessage() {
             const userMessage = document.getElementById("userMessage").value.trim();
             const responseElement = document.getElementById("response-box");
-
+        
             if (!userMessage) {
-                alert("Please enter a message!"); 
+                alert("Please enter a message!");
                 return;
             }
-
-            fetch("http://127.0.0.1:8000/chatbot_response/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMessage })
+        
+            // Encode the message to be safely passed as a URL parameter
+            const encodedMessage = encodeURIComponent(userMessage);
+            const apiUrl = `https://vnit-ai-hackathon-production.up.railway.app/chatbot_response/?message=${encodedMessage}`;
+        
+            fetch(apiUrl, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
             })
             .then(response => response.json())
             .then(data => {
@@ -403,6 +406,7 @@
                 responseElement.textContent = "Error fetching response";
             });
         }
+        
         function countdown() {
             let eventDate = new Date("March 19, 2025 06:00:00").getTime();
             let now = new Date().getTime();
