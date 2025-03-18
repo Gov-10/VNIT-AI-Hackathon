@@ -3,7 +3,6 @@ from django.http import JsonResponse
 import requests
 import os
 import json  
-from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from rapidfuzz import process  # Import fuzzy matching
 from .models import Event  # Import Event model
@@ -61,15 +60,14 @@ FAQ_ANSWERS = {
     "hello": "Hello there! Welcome to the AI Tech Fest. How can I assist you today?",
     "hi": "Hi! What would you like to know about AI, events, or locations?",
     "tell me a tech joke": "Why did the AI break up with its girlfriend? She had too many issues to debug!",
-    "How can I contact you": "Email: abc10@gmail.com , Phone: +91-1234567890",
+    "how can i contact you": "Email: abc10@gmail.com , Phone: +91-1234567890",
 }
 
 # Function to find the best matching question
 def get_best_match(user_input):
-    match, score, _ = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=60)  
-    return match if score else None  
+    result = process.extractOne(user_input, ALLOWED_QUESTIONS, score_cutoff=60)
+    return result[0] if result else None  
 
-@csrf_exempt
 def chatbot_response(request):
     if request.method == "GET":
         try:
@@ -107,7 +105,11 @@ def chatbot_response(request):
             if not best_match:
                 return JsonResponse({"reply": "Sorry, I can only answer specific questions about AI, events, or locations."})
 
-            # Step 5: Generate AI response using Gemini API
+            # Step 5: Ensure API Key exists before calling Gemini API
+            if not GEMINI_API_KEY:
+                return JsonResponse({"reply": "API key missing. Please check the server configuration."})
+
+            # Step 6: Generate AI response using Gemini API
             prompt = f"""
             You are an AI chatbot. Your task is to answer the following question in a clear and precise manner.
 
@@ -129,11 +131,11 @@ def chatbot_response(request):
             response = requests.post(url, headers=headers, json=payload)
             api_response = response.json()
 
-            if "candidates" in api_response:
-                reply = api_response["candidates"][0]["content"]["parts"][0]["text"]
+            if "candidates" in api_response and api_response["candidates"]:
+                reply = api_response["candidates"][0].get("content", {}).get("parts", [{}])[0].get("text", "No valid response received.")
                 return JsonResponse({"reply": reply})
-            else:
-                return JsonResponse({"reply": "I'm unable to answer that right now, please try another question."})
+
+            return JsonResponse({"reply": "I'm unable to fetch a response at the moment."})
 
         except Exception as e:
             return JsonResponse({"reply": "Sorry, I can't answer this right now."})
