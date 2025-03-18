@@ -16,7 +16,7 @@
 
 function sendMessage() {
     let userMessage = document.getElementById("user-input").value;
-    
+    console.log(userMessage);
     // Encode message for URL
     let encodedMessage = encodeURIComponent(userMessage);
 
