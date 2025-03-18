@@ -22,7 +22,8 @@ function sendMessage() {
 
     fetch("https://vnit-ai-hackathon-production.up.railway.app/chatbot_response?message=" + encodedMessage, {
         method: "GET",
-        credentials: "include",  // Ensures cookies are sent
+        credentials: "include",
+        mode: "cors",  // Ensures cookies are sent
         headers: {
             "Content-Type": "application/json"
         }
