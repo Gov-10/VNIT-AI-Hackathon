@@ -27,10 +27,10 @@ def event_detail(request, slug):
     event = get_object_or_404(Event, slug=slug)
     return render(request, 'event_detail.html', {'event': event})
 
-
 def event_list(request):
     events = Event.objects.all()
     return render(request, 'event_list.html', {'events': events})
+
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -50,20 +50,19 @@ ALLOWED_QUESTIONS = [
     "Tell me a tech joke",
 ]
 
-#dictionary for Google Maps locations
+# Dictionary for Google Maps locations
 LOCATION_MAPS = {
     "iiit butibori": "https://maps.app.goo.gl/D6JEFcKjNyX8TsVm7",
     "vnit nagpur": "https://maps.app.goo.gl/tp2ToBrJRDgqreuk7",
 }
 
-#Predefined questions
+# Predefined questions
 FAQ_ANSWERS = {
     "hello": "Hello there! Welcome to the AI Tech Fest. How can I assist you today?",
     "hi": "Hi! What would you like to know about AI, events, or locations?",
     "tell me a tech joke": "Why did the AI break up with its girlfriend? She had too many issues to debug!",
-    "How can I contact you" : "email: abc10@gmail.com , phone: +91-1234567890"
+    "How can I contact you": "Email: abc10@gmail.com , Phone: +91-1234567890",
 }
-
 
 # Function to find the best matching question
 def get_best_match(user_input):
@@ -72,10 +71,13 @@ def get_best_match(user_input):
 
 @csrf_exempt
 def chatbot_response(request):
-    if request.method == "POST":
+    if request.method == "GET":
         try:
-            data = json.loads(request.body)
-            message = data.get("message", "").strip().lower()
+            # Extract query parameter
+            message = request.GET.get("message", "").strip().lower()
+
+            if not message:
+                return JsonResponse({"reply": "Please provide a message query."})
 
             # Step 1: Handle exact matches for location first
             if message in LOCATION_MAPS:
@@ -137,10 +139,3 @@ def chatbot_response(request):
             return JsonResponse({"reply": "Sorry, I can't answer this right now."})
 
     return JsonResponse({"reply": "Invalid request method."})
-
-
-
-
-
-
-
